@@ -7,13 +7,13 @@ connection = sqlite3.connect("data.db")
 
 CREATE_MOVIES_TABLE = """
 create table if not exists movies (
-    id INTEGER PRIMARY KEY,
+    movie_id INTEGER PRIMARY KEY,
     title TEXT,
     release_timestamp REAL);"""
 
 CREATE_USERS_TABLE = """
 create table if not exists users (
-    id INTEGER PRIMARY KEY,
+    user_id INTEGER PRIMARY KEY,
     name TEXT);"""
 
 CREATE_WATCHED_TABLE = """
@@ -33,19 +33,19 @@ INSERT_WATCHED_MOVIE = """
 insert into watched (movie_id, user_id) values (?,?);"""
 
 DELETE_MOVIE = """
-delete from movies where id = ?;"""
+delete from movies where movie_id = ?;"""
 
 SELECT_ALL_MOVIES = """
-select id, title, release_timestamp from movies;"""
+select movie_id, title, release_timestamp from movies;"""
 
 SELECT_UPCOMING_MOVIES = """
-select id, title, release_timestamp from movies where release_timestamp > ?;"""
+select movie_id, title, release_timestamp from movies where release_timestamp > ?;"""
 
 SELECT_WATCHED_MOVIES = """
-select m.title from watched w inner join movies m on w.movie_id = m.id inner join users u on w.user_id = u.id where u.name = ?;"""
+select m.title from watched w inner join movies m on w.movie_id = m.movie_id inner join users u on w.user_id = u.user_id where u.name = ?;"""
 
 SELECT_USERS = """
-select id, name from users;"""
+select user_id, name from users;"""
 
 # SQL METHODS
 
