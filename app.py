@@ -30,22 +30,37 @@ def print_movies(movies):
     print("--\n")
     print("\n")
 
+def print_watched_movies(movies):
+    print("-- Movies --")
+    for movie in movies:
+        print(f"{movie[0]}")
+    print("--\n")
+    print("\n")
+
 def set_watched():
     title = input("Movie title: ")
-    database.watch_movie(title)
+    watcher_name = input("Watcher name: ")
+    database.watch_movie(title, watcher_name)
+
+def get_watched():
+    watcher_name = input("Watcher name: ")
+    print_watched_movies(database.get_watched_movies(watcher_name))
+
+def get_movies(upcoming):
+    print_movies(database.get_movies(upcoming))
 
 user_input = input(menu)
 while user_input != "6":
     if user_input == "1":
         add_movie()
     elif user_input == "2":
-        print_movies(database.get_movies(True))
+        get_movies(True)
     elif user_input == "3":
-        print_movies(database.get_movies(False))
+        get_movies(False)
     elif user_input == "4":
         set_watched()
     elif user_input == "5":
-        print_movies(database.get_watched_movies())
+        get_watched()
     else:
         print("Invalid input, please try again!")
     user_input = input(menu)
