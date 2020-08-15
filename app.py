@@ -1,7 +1,5 @@
-import os
 import datetime
-import psycopg2
-from dotenv import load_dotenv
+import database
 
 menu = """Please select one of the following options:
 0) Add a user.
@@ -11,7 +9,8 @@ menu = """Please select one of the following options:
 4) Watch a movie
 5) View watched movies.
 6) List users.
-7) Exit.
+7) RESET
+8) Exit.
 
 Your selection: """
 welcome = "Welcome to the watchlist app!"
@@ -63,8 +62,11 @@ def get_watched():
 def get_movies(upcoming):
     print_movies(database.get_movies(upcoming))
 
+def reset_tables():
+    database.reset_tables()
+
 user_input = input(menu)
-while user_input != "7":
+while user_input != "8":
     if user_input == "0":
         add_user()
     elif user_input == "1":
@@ -79,6 +81,8 @@ while user_input != "7":
         get_watched()
     elif user_input == "6":
         get_users()
+    elif user_input == "7":
+        reset_tables()
     else:
         print("Invalid input, please try again!")
     user_input = input(menu)
