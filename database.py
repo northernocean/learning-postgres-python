@@ -7,7 +7,7 @@ connection = sqlite3.connect("data.db")
 
 CREATE_MOVIES_TABLE = """
 create table if not exists movies (
-    movie_id INTEGER PRIMARY KEY,
+    movie_id SERIAL PRIMARY KEY,
     title TEXT,
     release_timestamp REAL);"""
 

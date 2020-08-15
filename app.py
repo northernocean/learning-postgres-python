@@ -1,5 +1,7 @@
-import database
+import os
 import datetime
+import psycopg2
+from dotenv import load_dotenv
 
 menu = """Please select one of the following options:
 0) Add a user.
