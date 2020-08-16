@@ -40,6 +40,9 @@ WHERE
     options.poll_id = %s
 GROUP BY options.id;"""
 
+SELECT_LATEST_POLL = """
+SELECT id, title, owner_username FROM polls order by id DESC LIMIT 1;"""
+
 SELECT_RANDOM_VOTE = """
 select * from votes where option_id = %s order by random() limit 1;"""
 
@@ -66,10 +69,11 @@ def get_polls(connection) -> List[Poll]:
             return cursor.fetchall()
 
 
-def get_latest_poll(connection):
+def get_latest_poll(connection) -> Poll:
     with connection:
         with connection.cursor() as cursor:
-            pass
+            cursor.execute(SELECT_LATEST_POLL)
+            return cursor.fetchone()
 
 
 def get_poll_details(connection, poll_id: int) -> List[PollWithOption]:
