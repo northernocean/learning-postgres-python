@@ -6,11 +6,11 @@ CREATE TABLE IF NOT EXISTS polls
 
 CREATE_OPTIONS = """
 CREATE TABLE IF NOT EXISTS options
-(id SERIAL PRIMARY KEY, option_text TEXT, poll_id INTEGER, FOREIGN_KEY(poll_id) REFERENCES polls(id));"""
+(id SERIAL PRIMARY KEY, option_text TEXT, poll_id INTEGER, CONSTRAINT fk_polls FOREIGN KEY(poll_id) REFERENCES polls(id));"""
 
 CREATE_VOTES = """
 CREATE TABLE IF NOT EXISTS votes
-(username TEXT, option_id INTEGER, FOREIGN_KEY(option_id) REFERENCES options(id));"""
+(username TEXT, option_id INTEGER, CONSTRAINT fk_options FOREIGN KEY(option_id) REFERENCES options(id));"""
 
 SELECT_ALL_POLLS = "SELECT * FROM polls;"
 
@@ -18,6 +18,23 @@ SELECT_POLL_WITH_OPTIONS = """
 SELECT * FROM polls
 INNER JOIN options ON polls.id = options.poll_id
 WHERE polls.id = %s;"""
+
+SELECT_POLL_VOTE_DETAILS = """
+SELECT
+    options.id,
+    options.option_text,
+    COUNT(votes.option_id) AS vote_count,
+    COUNT(votes.option_id) / SUM(COUNT(votes.option_id)) OVER() * 100.0 as vote_percentage
+FROM
+    options
+    LEFT JOIN votes
+    ON options.id = votes.option_id
+WHERE
+    options.poll_id = %s
+GROUP BY options.id;"""
+
+SELECT_RANDOM_VOTE = """
+select * from votes where option_id = %s order by random() limit 1;"""
 
 INSERT_POLL_RETURNING_ID = """
 insert into polls (title, owner_username) values (%s, %s) returning id;"""
@@ -58,13 +75,14 @@ def get_poll_details(connection, poll_id):
 def get_poll_and_vote_results(connection, poll_id):
     with connection:
         with connection.cursor() as cursor:
-            pass
+            cursor.execute(SELECT_POLL_VOTE_DETAILS, (poll_id,))
 
 
 def get_random_poll_vote(connection, option_id):
     with connection:
         with connection.cursor() as cursor:
-            pass
+            cursor.execute(SELECT_RANDOM_VOTE, (option_id,))
+            return cursor.fetchone()
 
 
 def create_poll(connection, title, owner, options):
@@ -73,7 +91,7 @@ def create_poll(connection, title, owner, options):
             cursor.execute(INSERT_POLL_RETURNING_ID, (title, owner))
             poll_id = cursor.fetchone[0]
             options_values = [(option_text, poll_id) for option_text in options]
-            execute_values(cursor, INSERT_OPTION, options_values)    
+            execute_values(cursor, INSERT_OPTION, options_values)
 
 
 def add_poll_vote(connection, username, option_id):
