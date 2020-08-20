@@ -43,6 +43,7 @@ def stacked_bar_chart_example():
     poll_women = [poll[2] for poll in polls]
 
     figure = plt.figure()
+
     figure.subplots_adjust(bottom=0.35)
     p = figure.add_subplot()
     men_votes = p.bar(
@@ -58,6 +59,6 @@ def stacked_bar_chart_example():
     p.legend((men_votes, women_votes), ("Men","Women"))
 
     plt.xticks(poll_x_coordinates, poll_titles, rotation=30, ha="right")
-    plt.show()
-
-
+    
+    figure.savefig("graph.png", bbox_inches="tight", pad_inches=0.25)  # pad_inches only available with bbox_inches='tight'
+    
