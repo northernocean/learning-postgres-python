@@ -12,6 +12,18 @@ def chart_options_for_poll(poll_id: int):
     xs = [option[1] for option in options]
     charts.pie_chart(xs=xs, categories=categories)  # sets current figure.
                                                     # We can also assign the return value as a figure
+    # show the pie chart ...
+    plt.show()
+
+    # show the bar chart ...
+    chart_votes_for_polls()
+
+
+def chart_votes_for_polls():
+    polls = database_g.get_poll_votes()
+    votes = [poll[1] for poll in polls]
+    poll_titles = [poll[0] for poll in polls]
+    charts.bar_chart(ys=votes, categories=poll_titles)
     plt.show()
 
 
