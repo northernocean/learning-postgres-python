@@ -47,13 +47,17 @@ def stacked_bar_chart_example():
     p = figure.add_subplot()
     p.bar(
         poll_x_coordinates,
-        poll_men
+        poll_men,
+        label="Men"
     )
     p.bar(
         poll_x_coordinates,
         poll_women,
-        bottom=poll_men
+        bottom=poll_men,
+        label="Women"
     )
+
+    p.legend()
 
     plt.xticks(poll_x_coordinates, poll_titles, rotation=30, ha="right")
     plt.show()
