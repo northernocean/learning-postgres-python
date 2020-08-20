@@ -60,5 +60,6 @@ def stacked_bar_chart_example():
 
     plt.xticks(poll_x_coordinates, poll_titles, rotation=30, ha="right")
     
-    figure.savefig("graph.png", bbox_inches="tight", pad_inches=0.25)  # pad_inches only available with bbox_inches='tight'
-    
+    plt.show()
+    # figure.savefig("graph.png", bbox_inches="tight", pad_inches=0.25)  # pad_inches only available with bbox_inches='tight'
+
