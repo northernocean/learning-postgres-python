@@ -24,3 +24,4 @@ def chart_votes_for_polls():
 chart_options_for_poll(1)
 chart_votes_for_polls()
 charts.stacked_bar_chart_example()
+charts.custom_legend_example()
