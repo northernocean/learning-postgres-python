@@ -33,6 +33,8 @@ def prompt_select_poll(polls):
     (selected_poll := input(POLL_PROMPT))
     chart_options_for_poll(int(selected_poll))
 
+charts.stacked_bar_chart_example()
+exit(1)
 
 while (user_input := input(MENU_PROMPT)) != 'q':
     polls = database_g.get_polls()
